@@ -10,10 +10,10 @@
 final FileWriter fw = new FileWriter(outputFileName);
 FetcherExecutor executor = new FetcherExecutor(10);//并发数为10
 //可以无限do~~
-executor.setParallel(true)//使用线程池并发操作
+executor.setParallel(true)//开启并发（使用线程池并发操作）
 		.doFetcher(set, new ItemUrlFetcher())
 		.doFetcher(new ContentFetcher())
-		.setParallel(false)//写文件，多线程写非线程安全
+		.setParallel(false)//写文件，多线程写时候是非线程安全，关掉并发
 		.doFetcher(new Fetcher() {
 				@Override
 				public List<String> fetch(String input) {
