@@ -5,6 +5,7 @@
 
 
 	   FetcherExecutor executor = new FetcherExecutor(10);//并发数为10
+	   //可以无限do~~
         executor.setParallel(true)//使用线程池并发操作
         		.doFetcher(set, new ItemUrlFetcher())
                 .doFetcher(new ContentFetcher())
