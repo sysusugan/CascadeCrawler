@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Zhushou360CrawlTest {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         System.out.println("THread id " + Thread.currentThread().getId());
 
@@ -27,7 +27,7 @@ public class Zhushou360CrawlTest {
         final FileWriter fw = new FileWriter(outputFileName);
 
         String[] arr = new String[]{
-                "11",//"12","14","15","16","18","17","102228","102230","102231","102232","102139","102233"
+                "11","12","14","15","16","18","17","102228","102230","102231","102232","102139","102233"
         };
 
         FetcherExecutor executor = new FetcherExecutor(10);
@@ -67,5 +67,7 @@ public class Zhushou360CrawlTest {
         long end = System.currentTimeMillis();
         System.out.println("take:" + (end - start) / 1000 + " sec");
         System.out.println("total lines:" + i.get() + " line");
+
+        executor.close();
     }
 }

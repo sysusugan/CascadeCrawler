@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class SjQqCrawlTest {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         System.out.println("THread id " + Thread.currentThread().getId());
 
@@ -57,5 +57,7 @@ public class SjQqCrawlTest {
         long end = System.currentTimeMillis();
         System.out.println("take:" + (end - start) / 1000 + " sec");
         System.out.println("total lines:" + i.get() + " line");
+
+        executor.close();
     }
 }

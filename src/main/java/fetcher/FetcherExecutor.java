@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class FetcherExecutor {
+    private static final long WAIT_TIME = 10;
 
     //最后一次fetcher的状态或结果信息的集合
     private ConcurrentHashMap<Integer, Collection<String>> currentRst = new ConcurrentHashMap<Integer, Collection<String>>();
@@ -79,5 +80,9 @@ public class FetcherExecutor {
         if (this.currentRst.get(currentId - 1) != null)
             this.currentRst.remove(currentId - 1);
         return this;
+    }
+
+    public void close() throws InterruptedException {
+        this.pool.awaitTermination(WAIT_TIME, TimeUnit.SECONDS);
     }
 }
