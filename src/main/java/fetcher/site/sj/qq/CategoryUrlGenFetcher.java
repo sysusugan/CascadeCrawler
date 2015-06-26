@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class CategoryUrlGenFetcher implements Fetcher {
 
-    private int pageSize = 50;
+    private int pageSize = 30;
     private int startRow = 0;
 
     @Override

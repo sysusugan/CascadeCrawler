@@ -17,7 +17,7 @@ public class CategoryUrlGenFetcher implements Fetcher {
     public List<String> fetch(String cateId) {
         LinkedList<String> ret = new LinkedList<String>();
         int startPage = 0;
-        while (startPage++ < 2) {
+        while (startPage++ < 1) {
             ret.add(String.format("http://zhushou.360.cn/list/index/cid/%s/?page=%s", cateId, startPage));
         }
 
