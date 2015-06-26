@@ -83,6 +83,8 @@ public class FetcherExecutor {
     }
 
     public void close() throws InterruptedException {
+        System.out.println("waiting for executor to shutdown in " + WAIT_TIME + " seconds...");
         this.pool.awaitTermination(WAIT_TIME, TimeUnit.SECONDS);
+        System.out.println("executor closed...");
     }
 }
