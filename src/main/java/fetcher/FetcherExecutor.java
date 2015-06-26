@@ -75,7 +75,7 @@ public class FetcherExecutor {
 
         this.currentRst.put(currentId, allRst);
 
-        //每次清理上一阶段的内存，让JVM能GC回收
+        //每次清理上一阶段的内存，让JVM自动GC
         if (this.currentRst.get(currentId - 1) != null)
             this.currentRst.remove(currentId - 1);
         return this;

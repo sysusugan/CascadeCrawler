@@ -4,8 +4,8 @@ import com.yeezhao.commons.util.AdvFile;
 import com.yeezhao.commons.util.ILineParser;
 import fetcher.Fetcher;
 import fetcher.FetcherExecutor;
-import fetcher.zol.com.ContentFetcher;
-import fetcher.zol.com.ItemUrlFetcher;
+import fetcher.site.detail.zol.ContentFetcher;
+import fetcher.site.detail.zol.ItemUrlFetcher;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class ZolCrawlTest {
 
         final AtomicInteger i = new AtomicInteger(0);
         long start = System.currentTimeMillis();
-        final String fileName = "/tmp/outfile.txt";
+        final String fileName = "/tmp/zol.txt";
         System.out.println(fileName);
         final FileWriter fw = new FileWriter(fileName);
 
