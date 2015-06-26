@@ -4,7 +4,7 @@
 
 
 
-	   FetcherExecutor executor = new FetcherExecutor(10);
+	   FetcherExecutor executor = new FetcherExecutor(10);//并发数为10
         executor.setParallel(true)//使用线程池并发操作
         		.doFetcher(set, new ItemUrlFetcher())
                 .doFetcher(new ContentFetcher())
@@ -12,7 +12,6 @@
                 .doFetcher(new Fetcher() {
                     @Override
                     public List<String> fetch(String input) {
-                        int v = i.addAndGet(1);
                         try {
                              fw.write(input + "\n");
                         } catch (IOException e) {
