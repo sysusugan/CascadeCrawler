@@ -2,20 +2,19 @@ package main;
 
 import fetcher.Fetcher;
 import fetcher.FetcherExecutor;
-import fetcher.site.sj.qq.CategoryUrlGenFetcher;
-import fetcher.site.sj.qq.ContentFetcher;
+import fetcher.site.zhushou360.CategoryUrlGenFetcher;
+import fetcher.site.zhushou360.ContentFetcher;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author sugan
  * @since 2015-05-26.
  */
-public class SjQqCrawlTest {
+public class Zhushou360CrawlTest {
 
     public static void main(String[] args) throws IOException {
 
@@ -23,29 +22,40 @@ public class SjQqCrawlTest {
 
         final AtomicInteger i = new AtomicInteger(0);
         long start = System.currentTimeMillis();
-        final String fileName = "/tmp/sj.qq.txt";
-        System.out.println(fileName);
-        final FileWriter fw = new FileWriter(fileName);
+        final String outputFileName = "/tmp/zhushou.360.txt";
+        System.out.println(outputFileName);
+        final FileWriter fw = new FileWriter(outputFileName);
 
         String[] arr = new String[]{
-                "103", "101", "122", "102", "112", "106", "104", "110", "115", "119", "111", "107", "118", "108", "100", "114", "117", "109", "105", "113", "116"
+                "11",//"12","14","15","16","18","17","102228","102230","102231","102232","102139","102233"
         };
 
         FetcherExecutor executor = new FetcherExecutor(10);
         executor.doFetcher(Arrays.asList(arr), new CategoryUrlGenFetcher())
                 .doFetcher(new ContentFetcher())
-                .setParallel(false)// 默认是并发，下一步不要并发运行（不使用线程池），因为要使用写文件，会有多线程不安全的问题
+                .setParallel(false)
+                .doFetcher(new Fetcher() {
+                    private Set<String> uniqSet = new HashSet<String>();
+
+                    @Override
+                    public List<String> fetch(String input) {
+                        List<String> ret = new LinkedList<String>();
+                        if (!uniqSet.contains(input)) {
+                            uniqSet.add(input);
+                            ret.add(input);
+                        }
+                        return ret;
+                    }
+                })
                 .doFetcher(new Fetcher() {
                     @Override
                     public List<String> fetch(String input) {
                         int v = i.addAndGet(1);
                         System.out.println("Thread ID:" + Thread.currentThread().getId() + "\t  Line" + v + ": " + input);
-                        synchronized (fw) {
-                            try {
-                                fw.write(input + "\n");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            fw.write(input + "\n");
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                         return null;
                     }

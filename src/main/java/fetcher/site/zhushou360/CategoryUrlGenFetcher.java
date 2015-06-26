@@ -1,4 +1,4 @@
-package fetcher.site.apk.hiapk;
+package fetcher.site.zhushou360;
 
 import fetcher.Fetcher;
 
@@ -17,8 +17,8 @@ public class CategoryUrlGenFetcher implements Fetcher {
     public List<String> fetch(String cateId) {
         LinkedList<String> ret = new LinkedList<String>();
         int startPage = 0;
-        while (startPage++ <10) {
-            ret.add(String.format("http://apk.hiapk.com/apps/%s?sort=5&pi=%s", cateId, startPage));
+        while (startPage++ < 2) {
+            ret.add(String.format("http://zhushou.360.cn/list/index/cid/%s/?page=%s", cateId, startPage));
         }
 
         return ret;
