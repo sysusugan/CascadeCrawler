@@ -13,12 +13,13 @@ import java.util.List;
  */
 public class CategoryUrlGenFetcher implements Fetcher {
 
-    private int pageSize = 30;
+    private int pageSize = 50;
     private int startRow = 0;
 
     @Override
     public List<String> fetch(String cateId) {
         LinkedList<String> ret = new LinkedList<String>();
+        //爬取1页 30个
         ret.add(String.format("http://sj.qq.com/myapp/cate/appList.htm?orgame=1&categoryId=%s&pageSize=%s&pageContext=%s"
                 , cateId, pageSize, startRow));
 

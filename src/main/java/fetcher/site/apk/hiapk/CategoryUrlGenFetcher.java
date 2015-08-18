@@ -17,7 +17,8 @@ public class CategoryUrlGenFetcher implements Fetcher {
     public List<String> fetch(String cateId) {
         LinkedList<String> ret = new LinkedList<String>();
         int startPage = 0;
-        while (startPage++ < 3) {
+        //每页10个
+        while (startPage++ < 5) {
             ret.add(String.format("http://apk.hiapk.com/apps/%s?sort=5&pi=%s", cateId, startPage));
         }
 
