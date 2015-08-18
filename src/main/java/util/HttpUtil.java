@@ -15,7 +15,6 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -149,7 +148,9 @@ public class HttpUtil {
 
         GetMethod get = new CustomGetMethod(uri);
         get.setRequestHeader("User-Agent", UA_PC_CHROME);
-            get.setFollowRedirects(false);
+
+        //是否自动跳转
+//        get.setFollowRedirects(false);
 
         String ret = null;
         try {
