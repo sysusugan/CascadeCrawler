@@ -4,13 +4,9 @@ import org.apache.commons.httpclient.HttpMethodBase;
 import org.jsoup.nodes.Document;
 
 /**
- * Created with IntelliJ IDEA.
- *
- * @author sugan
- * @since 2014/8/11
+ * HttpResult对象，用于htt请求发出后，进一步对对象进行操作
  */
 public class HttpResult {
-
     private HttpMethodBase method;
     private String responseString;
     private Document document;

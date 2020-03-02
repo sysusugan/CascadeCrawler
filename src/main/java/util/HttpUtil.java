@@ -9,6 +9,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -20,12 +21,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- *
- * @author sugan
- * @since 2014/8/5
+ * Http请求发送工具类
  */
 public class HttpUtil {
+    private static final Logger LOG = Logger.getLogger(HttpUtil.class);
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final int SOCK_TIMEOUT = 5000;
     private static final int CONNECT_TIMEOUT = 5000;
@@ -82,7 +81,7 @@ public class HttpUtil {
         client.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
         client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, false);
 
-        GetMethod get = new CustomGetMethod(uri);
+        GetMethod get = new GzipGetMethod(uri);
         get.setRequestHeader("User-Agent", UA_PC_CHROME);
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -98,7 +97,7 @@ public class HttpUtil {
         if (ret.trim().equals(""))
             return null;
         if (status != 200) {
-            System.err.println("[WARNING] status code\t" + status + "\t url:\t" + uri);
+            LOG.error("[WARNING] status code\t" + status + "\t url:\t" + uri);
             return null;
         }
         return new HttpResult(get, ret, Jsoup.parse(ret));
@@ -146,7 +145,7 @@ public class HttpUtil {
         client.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
         client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, false);
 
-        GetMethod get = new CustomGetMethod(uri);
+        GetMethod get = new GzipGetMethod(uri);
         get.setRequestHeader("User-Agent", UA_PC_CHROME);
 
         //是否自动跳转
