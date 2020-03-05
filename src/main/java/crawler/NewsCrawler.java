@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.slf4j.LoggerFactory;
 import util.DateUtil;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Collections;
@@ -38,10 +37,24 @@ public class NewsCrawler implements ICrawler<NewsMessage> {
     public List<NewsMessage> crawl(NewsMessage msg) {
         try {
             String url = msg.getString(Message._URL);
-            Document doc = Jsoup.parse(new URL(url), 15000);
+            Document doc = null;
+            int i = 3;
+            Exception e_out = null;
+            while (i-- > 0) {
+                try {
+                    doc = Jsoup.parse(new URL(url), 15000);
+                    break;
+                } catch (Exception e) {
+                    e_out = e;
+                }
+            }
+            if (doc == null) {
+                LOG.warn("抓取失败url:{}", url);
+                LOG.error(e_out.getMessage(), e_out);
+            }
             NewsMessage newsObj = new NewsMessage();
 
-            if (!selectors.isEmpty()) {
+            if (!selectors.isEmpty() && doc != null) {
                 for (Map.Entry<String, String> entry : selectors.entrySet()) {
                     String key = entry.getKey();
                     String selector = entry.getValue();
@@ -76,7 +89,7 @@ public class NewsCrawler implements ICrawler<NewsMessage> {
             }
 
             return Collections.singletonList(newsObj);
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
         return null;
