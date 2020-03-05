@@ -1,4 +1,4 @@
 .idea/
-CascadeCrawler.iml
+*.iml
 logs/
 target/

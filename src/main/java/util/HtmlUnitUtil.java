@@ -6,11 +6,9 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.yeezhao.commons.util.Pair;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
 
 /**
  * @author zebin
@@ -30,34 +28,33 @@ public class HtmlUnitUtil {
      */
     public static Pair<String, String> visit(final String url, final long timeout) throws InterruptedException {
         final Pair<String, String> pair = new Pair<>(null, null);
+        try (final WebClient client = new WebClient(BrowserVersion.CHROME)) {
+//        client.setTimeout((int) timeout);
+            client.setJavaScriptTimeout(timeout);
+//        client.setCssEnabled(false);
+//        client.setThrowExceptionOnFailingStatusCode(false);
+            HtmlUnitTask htmlUnitTask = new HtmlUnitTask(client, url, pair);
+            Thread t = new Thread(htmlUnitTask);
+            t.run();
 
-        WebClient client = new WebClient(BrowserVersion.FIREFOX_3_6);
-        client.setTimeout((int) timeout);
-        client.setJavaScriptTimeout(timeout);
-        client.setCssEnabled(false);
-        client.setThrowExceptionOnScriptError(false);
-        client.setThrowExceptionOnFailingStatusCode(false);
-        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
+            int maxWaitSec = 300 * 1000;//300 sec
+            long st = System.currentTimeMillis();
+            while (pair.first == null && pair.second == null && t.isAlive()) {
+                LOG.info("sleep 10 sec for htmlunit thread...");
+                TimeUnit.SECONDS.sleep(10);
 
-
-        HtmlUnitTask htmlUnitTask = new HtmlUnitTask(client, url, pair);
-        Thread t = new Thread(htmlUnitTask);
-        t.run();
-
-        int maxWaitSec = 300 * 1000;//300 sec
-        long st = System.currentTimeMillis();
-        while (pair.first == null && pair.second == null && t.isAlive()) {
-            LOG.info("sleep 10 sec for htmlunit thread...");
-            TimeUnit.SECONDS.sleep(10);
-
-            if (System.currentTimeMillis() - st > maxWaitSec) {
-                LOG.info("htmlunit thread reach timeout: 300 sec, exit...");
-                client.closeAllWindows();
-                t.interrupt();
-                break;
+                if (System.currentTimeMillis() - st > maxWaitSec) {
+                    LOG.info("htmlunit thread reach timeout: 300 sec, exit...");
+                    client.close();
+                    t.interrupt();
+                    break;
+                }
             }
+            return pair;
+        } catch (Throwable e) {
+            LOG.error(e.getMessage(), e);
         }
-        return pair;
+        return null;
     }
 }
 
@@ -81,10 +78,10 @@ class HtmlUnitTask implements Runnable {
             page = client.getPage(url);
             String html = page.asXml();
             String pageUrl = page.getUrl().toString();
-            client.closeAllWindows();
+            client.close();
             pair.first = html;
             pair.second = pageUrl;
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
     }

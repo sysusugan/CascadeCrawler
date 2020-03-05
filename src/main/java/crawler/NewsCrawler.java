@@ -37,7 +37,8 @@ public class NewsCrawler implements ICrawler<NewsMessage> {
     @Override
     public List<NewsMessage> crawl(NewsMessage msg) {
         try {
-            Document doc = Jsoup.parse(new URL(msg.getString(Message._URL)), 10000);
+            String url = msg.getString(Message._URL);
+            Document doc = Jsoup.parse(new URL(url), 15000);
             NewsMessage newsObj = new NewsMessage();
 
             if (!selectors.isEmpty()) {
@@ -62,6 +63,7 @@ public class NewsCrawler implements ICrawler<NewsMessage> {
                                 fomattedDateStr = DateUtil.toRhinoStandardDate(htmlVal);
                                 newsObj.setDate(fomattedDateStr);
                             } catch (ParseException e) {
+                                LOG.warn("url:{} ", url);
                                 LOG.warn(e.getMessage(), e);
                             }
                             break;
