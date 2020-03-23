@@ -1,7 +1,5 @@
 package util;
 
-import com.yeezhao.commons.util.Pair;
-import com.yeezhao.commons.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;

@@ -1,8 +1,8 @@
 package util.phoenix;
 
-import com.yeezhao.commons.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.StringUtil;
 
 import java.io.Serializable;
 import java.sql.*;

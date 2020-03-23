@@ -1,6 +1,5 @@
 package util;
 
-import com.yeezhao.commons.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 

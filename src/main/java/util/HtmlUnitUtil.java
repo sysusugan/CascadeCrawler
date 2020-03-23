@@ -3,7 +3,6 @@ package util;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.yeezhao.commons.util.Pair;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.ExecutionException;

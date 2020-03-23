@@ -1,6 +1,5 @@
 package crawler;
 
-import com.yeezhao.commons.util.Pair;
 import crawler.entity.Message;
 import crawler.entity.NewsMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import util.HtmlUnitUtil;
+import util.Pair;
 
 import java.net.URL;
 import java.util.LinkedList;
@@ -51,9 +51,9 @@ public class AnchorLinkCrawler implements ICrawler<Message> {
             /**
              * 偷懒用HTMLUnit渲染， 否则分析Ajax请求太麻烦~
              */
-//            Pair<String, String> pair = HtmlUnitUtil.visit(url, 10000);
-//            doc = Jsoup.parse(pair.first);
-            doc = Jsoup.parse(new URL(url), 10000);
+            Pair<String, String> pair = HtmlUnitUtil.visit(url, 10000);
+            doc = Jsoup.parse(pair.first);
+//            doc = Jsoup.parse(new URL(url), 10000);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
